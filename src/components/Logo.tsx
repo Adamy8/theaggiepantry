@@ -1,5 +1,5 @@
 import React from 'react';
-import { Leaf } from 'lucide-react';
+import img from '../public/logo.svg';
 
 interface LogoProps {
   size?: 'small' | 'medium' | 'large';
@@ -29,14 +29,17 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', textColor = 'text-primary'
 
   return (
     <div className={`flex items-center ${spacing}`}>
-      <div className="bg-accent-green rounded-full p-2">
-        <Leaf size={iconSize} className="text-white" />
-      </div>
-      <div className={`font-bold ${textSize} ${textColor}`}>
-        UC Davis Food Resources
+      {/* Logo */}
+      <div>
+      <img src={img} alt="Logo" className="mx-auto w-24 h-24 md:w-32 md:h-32" />
+    </div>
+      
+      {/* Text */}
+      <div className={`font-light ${textSize} ${textColor}`}>
+        The Aggie Pantry
       </div>
     </div>
-  );
+      );
 };
 
 export default Logo;

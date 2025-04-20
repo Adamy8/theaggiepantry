@@ -35,7 +35,7 @@ const ShopperPage: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col">
+    <div className="min-h-screen bg-[#FDEED8] flex flex-col">
       <Header />
       
       <main className="flex-1 container mx-auto px-4 py-8">
@@ -59,7 +59,7 @@ const ShopperPage: React.FC = () => {
             ))}
           </div>
         ) : (
-          <EmptyState
+          <EmptyState  
             title="No items found"
             description={`We couldn't find any ${section === 'pantry' ? 'Pantry' : 'Freedge'} items matching your criteria.`}
             actionLabel="Clear Filters"

@@ -41,7 +41,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="bg-primary text-white py-4 px-6 shadow-md">
+    <header className="bg-[#EC7F47] text-white py-4 px-6 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           {!isRootPage && (
@@ -54,13 +54,13 @@ const Header: React.FC = () => {
             </button>
           )}
           <div className="flex items-center space-x-8">
-            <h1 className="text-xl font-bold">UC Davis Food Resources</h1>
+            <h1 className="text-xl text-white font-medium">The Aggie Pantry</h1>
             {!isRootPage && (
               <div className="flex space-x-4">
                 <button
                   className={`py-1 px-3 rounded transition-all ${
                     activeSection === 'pantry'
-                      ? 'bg-white text-primary font-medium'
+                      ? 'bg-white/10 text-primary font-medium'
                       : 'text-white hover:bg-white/10'
                   }`}
                   onClick={() => handleSectionChange('pantry')}
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
                 <button
                   className={`py-1 px-3 rounded transition-all ${
                     activeSection === 'freedge'
-                      ? 'bg-white text-primary font-medium'
+                      ? 'bg-white/10 text-primary font-medium'
                       : 'text-white hover:bg-white/10'
                   }`}
                   onClick={() => handleSectionChange('freedge')}

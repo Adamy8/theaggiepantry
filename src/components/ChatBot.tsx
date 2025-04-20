@@ -130,7 +130,7 @@ const ChatBot: React.FC = () => {
       {/* Chat button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full bg-accent-green text-white shadow-lg hover:bg-accent-green/90 transition-all z-50 ${
+        className={`fixed bottom-6 right-6 p-4 rounded-full bg-[#EC7F47] text-white shadow-lg hover:bg-accent-green/90 transition-all z-50 ${
           isOpen ? 'scale-0' : 'scale-100'
         }`}
         aria-label="Open chat"
@@ -147,10 +147,10 @@ const ChatBot: React.FC = () => {
         }`}
       >
         {/* Header */}
-        <div className="bg-primary text-white p-4 flex justify-between items-center">
+        <div className="bg-[#EC7F47] text-white p-4 flex justify-between items-center">
           <div className="flex items-center">
             <MessageCircle size={20} className="mr-2" />
-            <h3 className="font-semibold">Recipe Assistant</h3>
+            <h3 className="font-semibold text-white">Recipe Assistant</h3>
           </div>
           <button
             onClick={() => setIsOpen(false)}
@@ -173,7 +173,7 @@ const ChatBot: React.FC = () => {
               <div
                 className={`max-w-[80%] p-3 rounded-lg ${
                   msg.isUser
-                    ? 'bg-primary text-white rounded-tr-none'
+                    ? 'bg-[#EC7F47] text-white rounded-tr-none'
                     : 'bg-white shadow rounded-tl-none'
                 }`}
               >
@@ -202,11 +202,11 @@ const ChatBot: React.FC = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="List ingredients you have..."
-              className="flex-1 p-2 border border-neutral-300 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-primary"
+              className="flex-1 p-2 border border-[#EC7F47] rounded-l-lg focus:outline-none focus:ring-1 focus:ring-[#EC7F47]"
             />
             <button
               type="submit"
-              className="bg-primary text-white p-2 rounded-r-lg hover:bg-secondary-blue transition-colors flex items-center justify-center"
+              className="bg-[#EC7F47] text-white p-2 rounded-r-lg hover:bg-[#EC7F47] transition-colors flex items-center justify-center"
               aria-label="Send message"
             >
               <Send size={20} />
