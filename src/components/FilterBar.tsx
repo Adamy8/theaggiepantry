@@ -3,20 +3,8 @@ import { Filter, Search, X } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const filterOptions = {
-  keywords: [
-    'vegetables',
-    'fruit',
-    'dairy',
-    'snacks',
-    'available',
-    'non-perishable',
-    'fresh',
-    'refrigerated',
-    'toiletries',
-    'bakery',
-  ],
-  dietary: ['vegan', 'vegetarian', 'gluten-free', 'nut-free'],
-  type: ['safeway', 'organic', 'local'],
+  type: ['vegan', 'vegetarian', 'gluten-free', 'nut-free'],
+  source: ['Sysco', 'Daylight Foods', 'Aggie Fresh', 'Donations'],
 };
 
 const FilterBar: React.FC = () => {
@@ -36,7 +24,7 @@ const FilterBar: React.FC = () => {
     });
   };
 
-  const toggleFilter = (category: 'keywords' | 'dietary' | 'type', value: string) => {
+  const toggleFilter = (category: 'type' | 'source', value: string) => {
     const currentFilters = [...selectedFilters[category]];
     const index = currentFilters.indexOf(value);
 
@@ -58,17 +46,15 @@ const FilterBar: React.FC = () => {
 
   const clearFilters = () => {
     setFilterOptions({
-      keywords: [],
-      dietary: [],
       type: [],
+      source: [],
       searchTerm: '',
     });
     setSearchTerm('');
   };
 
   const hasActiveFilters =
-    selectedFilters.keywords.length > 0 ||
-    selectedFilters.dietary.length > 0 ||
+    selectedFilters.source.length > 0 ||
     selectedFilters.type.length > 0 ||
     selectedFilters.searchTerm !== '';
 
@@ -105,9 +91,8 @@ const FilterBar: React.FC = () => {
             Filters
             {hasActiveFilters && (
               <span className="ml-2 bg-white text-primary text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {selectedFilters.keywords.length +
-                  selectedFilters.dietary.length +
-                  selectedFilters.type.length +
+                {selectedFilters.type.length +
+                  selectedFilters.source.length +
                   (selectedFilters.searchTerm ? 1 : 0)}
               </span>
             )}
@@ -127,34 +112,16 @@ const FilterBar: React.FC = () => {
 
       {isFilterOpen && (
         <div className="mt-4 bg-white p-4 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn">
-          <div>
-            <h3 className="font-medium mb-2 text-neutral-900">Keywords</h3>
-            <div className="flex flex-wrap gap-2">
-              {filterOptions.keywords.map((keyword) => (
-                <button
-                  key={keyword}
-                  onClick={() => toggleFilter('keywords', keyword)}
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    selectedFilters.keywords.includes(keyword)
-                      ? 'bg-[#EC7F47] text-white'
-                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                  } transition-colors`}
-                >
-                  {keyword}
-                </button>
-              ))}
-            </div>
-          </div>
 
           <div>
-            <h3 className="font-medium mb-2 text-neutral-900">Dietary</h3>
+            <h3 className="font-medium mb-2 text-neutral-900">Type</h3>
             <div className="flex flex-wrap gap-2">
-              {filterOptions.dietary.map((diet) => (
+              {filterOptions.type.map((diet) => (
                 <button
                   key={diet}
-                  onClick={() => toggleFilter('dietary', diet)}
+                  onClick={() => toggleFilter('type', diet)}
                   className={`px-3 py-1 rounded-full text-sm ${
-                    selectedFilters.dietary.includes(diet)
+                    selectedFilters.type.includes(diet)
                       ? 'bg-[#EC7F47] text-white'
                       : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   } transition-colors`}
@@ -166,14 +133,14 @@ const FilterBar: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="font-medium mb-2 text-neutral-900">Type</h3>
+            <h3 className="font-medium mb-2 text-neutral-900">Source</h3>
             <div className="flex flex-wrap gap-2">
-              {filterOptions.type.map((type) => (
+              {filterOptions.source.map((type) => (
                 <button
                   key={type}
-                  onClick={() => toggleFilter('type', type)}
+                  onClick={() => toggleFilter('source', type)}
                   className={`px-3 py-1 rounded-full text-sm ${
-                    selectedFilters.type.includes(type)
+                    selectedFilters.source.includes(type)
                       ? 'bg-[#EC7F47] text-white '
                       : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   } transition-colors`}

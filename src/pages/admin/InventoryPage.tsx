@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import Sidebar from '../../components/Sidebar';
 import { 
-  Package, 
   Search, 
   Plus, 
   Filter, 
@@ -11,7 +10,6 @@ import {
   X, 
   Check,
   Calendar,
-  Tag
 } from 'lucide-react';
 import { Product } from '../../types';
 import EmptyState from '../../components/EmptyState';
@@ -29,19 +27,19 @@ const InventoryPage: React.FC = () => {
     imageUrl: '',
     quantity: 0,
     dateAdded: new Date().toISOString().split('T')[0],
-    tags: [],
-    dietary: [],
-    type: 'safeway',
+    type: '',
     source: '',
     isAvailable: true,
     section: 'pantry',
   });
   
-  const [tagInput, setTagInput] = useState('');
-  const [dietaryInput, setDietaryInput] = useState('');
-  
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleEdit = (product: Product) => {
+    setEditingProduct(product);
+    setShowAddModal(true);
   };
   
   const handleInputChange = (
@@ -60,71 +58,7 @@ const InventoryPage: React.FC = () => {
       });
     }
   };
-  
-  const handleAddTag = () => {
-    if (!tagInput.trim()) return;
-    
-    if (editingProduct) {
-      setEditingProduct({
-        ...editingProduct,
-        tags: [...editingProduct.tags, tagInput.trim().toLowerCase()],
-      });
-    } else {
-      setNewProduct({
-        ...newProduct,
-        tags: [...newProduct.tags, tagInput.trim().toLowerCase()],
-      });
-    }
-    
-    setTagInput('');
-  };
-  
-  const handleRemoveTag = (tag: string) => {
-    if (editingProduct) {
-      setEditingProduct({
-        ...editingProduct,
-        tags: editingProduct.tags.filter(t => t !== tag),
-      });
-    } else {
-      setNewProduct({
-        ...newProduct,
-        tags: newProduct.tags.filter(t => t !== tag),
-      });
-    }
-  };
-  
-  const handleAddDietary = () => {
-    if (!dietaryInput.trim()) return;
-    
-    if (editingProduct) {
-      setEditingProduct({
-        ...editingProduct,
-        dietary: [...editingProduct.dietary, dietaryInput.trim().toLowerCase()],
-      });
-    } else {
-      setNewProduct({
-        ...newProduct,
-        dietary: [...newProduct.dietary, dietaryInput.trim().toLowerCase()],
-      });
-    }
-    
-    setDietaryInput('');
-  };
-  
-  const handleRemoveDietary = (diet: string) => {
-    if (editingProduct) {
-      setEditingProduct({
-        ...editingProduct,
-        dietary: editingProduct.dietary.filter(d => d !== diet),
-      });
-    } else {
-      setNewProduct({
-        ...newProduct,
-        dietary: newProduct.dietary.filter(d => d !== diet),
-      });
-    }
-  };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -139,20 +73,13 @@ const InventoryPage: React.FC = () => {
         imageUrl: '',
         quantity: 0,
         dateAdded: new Date().toISOString().split('T')[0],
-        tags: [],
-        dietary: [],
-        type: 'safeway',
+        type: '',
         source: '',
         isAvailable: true,
         section: 'pantry',
       });
       setShowAddModal(false);
     }
-  };
-  
-  const handleEdit = (product: Product) => {
-    setEditingProduct(product);
-    setShowAddModal(true);
   };
   
   const handleDelete = (id: string) => {
@@ -165,14 +92,12 @@ const InventoryPage: React.FC = () => {
     updateProduct(id, { isAvailable: !currentStatus });
   };
   
-  const filteredProducts = products
-    .filter(product => 
+  const filteredProducts = products.filter(product => 
       filterSection === 'all' ? true : product.section === filterSection
     )
     .filter(product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      product.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
   
   return (
@@ -471,6 +396,23 @@ const InventoryPage: React.FC = () => {
                 
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 mb-1">
+                    Source
+                  </label>
+                  <select
+                    required
+                    value={editingProduct ? editingProduct.source : newProduct.source}
+                    onChange={(e) => handleInputChange(e, 'source')}
+                    className="w-full p-2 border border-neutral-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="Sysco">Sysco</option>
+                    <option value="Daylight Foods">Daylight Foods</option>
+                    <option value="Aggie Fresh">Aggie Fresh</option>
+                    <option value="Donations">Donations</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-neutral-700 mb-1">
                     Type
                   </label>
                   <select
@@ -479,23 +421,12 @@ const InventoryPage: React.FC = () => {
                     onChange={(e) => handleInputChange(e, 'type')}
                     className="w-full p-2 border border-neutral-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="safeway">Safeway</option>
-                    <option value="organic">Organic</option>
-                    <option value="local">Local</option>
+                    <option value=""> N/A </option>
+                    <option value="vegan">Vegan</option>
+                    <option value="nut-free">Nut-free</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="gluten-free">Gluten-free</option>
                   </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
-                    Source
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={editingProduct ? editingProduct.source : newProduct.source}
-                    onChange={(e) => handleInputChange(e, 'source')}
-                    className="w-full p-2 border border-neutral-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
                 </div>
                 
                 <div>
@@ -539,99 +470,6 @@ const InventoryPage: React.FC = () => {
                     <option value="true">Available</option>
                     <option value="false">Unavailable</option>
                   </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
-                    Tags
-                  </label>
-                  <div className="flex items-center">
-                    <div className="relative flex-grow">
-                      <input
-                        type="text"
-                        value={tagInput}
-                        onChange={(e) => setTagInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            handleAddTag();
-                          }
-                        }}
-                        placeholder="Add tag and press Enter"
-                        className="w-full p-2 pl-8 border border-neutral-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                      <Tag size={16} className="absolute left-2 top-1/2 transform -translate-y-1/2 text-neutral-500" />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleAddTag}
-                      className="ml-2 px-3 py-2 bg-primary text-white rounded hover:bg-primary-blue"
-                    >
-                      Add
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {(editingProduct ? editingProduct.tags : newProduct.tags).map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-primary text-white"
-                      >
-                        {tag}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveTag(tag)}
-                          className="ml-1 text-white hover:text-white/80"
-                        >
-                          <X size={14} />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
-                    Dietary Restrictions
-                  </label>
-                  <div className="flex items-center">
-                    <input
-                      type="text"
-                      value={dietaryInput}
-                      onChange={(e) => setDietaryInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          handleAddDietary();
-                        }
-                      }}
-                      placeholder="Add dietary restriction and press Enter"
-                      className="w-full p-2 border border-neutral-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleAddDietary}
-                      className="ml-2 px-3 py-2 bg-primary text-white rounded hover:bg-primary-blue"
-                    >
-                      Add
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {(editingProduct ? editingProduct.dietary : newProduct.dietary).map((diet) => (
-                      <span
-                        key={diet}
-                        className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-accent-green text-white"
-                      >
-                        {diet}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveDietary(diet)}
-                          className="ml-1 text-white hover:text-white/80"
-                        >
-                          <X size={14} />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
                 </div>
               </div>
               

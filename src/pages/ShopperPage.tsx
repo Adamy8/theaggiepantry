@@ -27,9 +27,8 @@ const ShopperPage: React.FC = () => {
   
   const clearFilters = () => {
     setFilterOptions({
-      keywords: [],
-      dietary: [],
       type: [],
+      source: [],
       searchTerm: '',
     });
   };

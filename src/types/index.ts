@@ -6,10 +6,8 @@ export interface Product {
   quantity: number;
   dateAdded: string;
   expiration?: string;
-  tags: string[];
-  dietary: string[];
-  type: string;
-  source: string;
+  type: string;     // '', 'vegan', 'gluten-free', 'nut-free', 'vegetarian'
+  source: string;     // 'Sysco', 'Daylight Foods', 'Aggie Fresh', 'Donations' 
   isAvailable: boolean;
   section: 'pantry' | 'freedge';
 }
@@ -38,9 +36,8 @@ export interface Volunteer {
 }
 
 export interface FilterOptions {
-  keywords: string[];
-  dietary: string[];
   type: string[];
+  source: string[];
   searchTerm: string;
 }
 
