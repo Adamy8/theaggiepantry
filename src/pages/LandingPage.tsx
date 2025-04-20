@@ -1,21 +1,25 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { UserCircle, LayoutDashboard } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import Logo from '../components/Logo';
 import Header from '../components/Header';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LandingPage: React.FC = () => {
-  const navigate = useNavigate();
   const { setActiveSection } = useAppContext();
-  
+  const { loginWithRedirect } = useAuth0();
+
   const handleShopperClick = (section: 'pantry' | 'freedge') => {
     setActiveSection(section);
-    navigate(`/shopper/${section}`);
+    loginWithRedirect({
+      appState: { returnTo: `/shopper/${section}` },
+    });
   };
   
   const handleAdminClick = () => {
-    navigate('/admin/dashboard');
+    loginWithRedirect({
+      appState: { returnTo: `/admin/dashboard` },
+    });
   };
   
   return (
