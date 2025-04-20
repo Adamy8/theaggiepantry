@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Product, Supplier, Volunteer, FilterOptions } from '../types';
 import { productData, supplierData, volunteerData } from '../data/mockData';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface AppContextType {
   products: Product[];
@@ -38,12 +39,37 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     searchTerm: '',
   });
 
-  const addProduct = (product: Omit<Product, 'id'>) => {
+  const { getAccessTokenSilently } = useAuth0();
+
+
+  const addProduct = async (product: Omit<Product, 'id'>) => {
     const newProduct = {
       ...product,
       id: Date.now().toString(),
     };
     setProducts([...products, newProduct]);
+    // to backend !
+    const token = await getAccessTokenSilently();
+    try {
+      const res = await fetch('/api/items/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newProduct),
+      });
+  
+      if (!res.ok) {
+        throw new Error(`Failed to add product: ${res.status}`);
+      }
+  
+      const result = await res.json();
+      const message = result.message;
+      console.log('Product saved to backend:', message);
+    } catch (err) {
+      console.error('Backend save failed:', err);
+    }
   };
 
   const updateProduct = (id: string, updates: Partial<Product>) => {
