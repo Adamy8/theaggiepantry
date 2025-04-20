@@ -3,6 +3,7 @@
       {
         "source": "/api/:path*/",
         "destination": "https://aggiepantry.ngrok.app/api/:path*/"
-      }
+      },
+      { "source": "/(.*)", "destination": "/index.html" }
     ]
 }

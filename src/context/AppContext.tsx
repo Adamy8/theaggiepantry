@@ -107,7 +107,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     // to backend !
     const token = await getAccessTokenSilently();
     try {
-      const res = await fetch(`/api/items/${id}`, {
+      const res = await fetch(`/api/items/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     // to backend !
     const token = await getAccessTokenSilently();
     try {
-      const res = await fetch(`/api/items/${id}`, {
+      const res = await fetch(`/api/items/${id}/`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
