@@ -15,7 +15,7 @@ import { Product } from '../../types';
 import EmptyState from '../../components/EmptyState';
 
 const InventoryPage: React.FC = () => {
-  const { products, addProduct, updateProduct, deleteProduct } = useAppContext();
+  const { products, fetchProducts ,addProduct, updateProduct, deleteProduct } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
