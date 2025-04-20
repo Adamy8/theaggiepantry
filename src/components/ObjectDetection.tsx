@@ -38,7 +38,7 @@ const ObjectDetection = (qrCode) => {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ "token": qrCode, "items": objs }),
+                body: JSON.stringify({ "token": qrCode.token, "items": objs }),
             });
             if (!res.ok) {throw new Error(`Failed to checkout: ${res.status}`);}
             const result = await res.json();
