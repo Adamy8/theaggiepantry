@@ -5,8 +5,12 @@ import Webcam from "react-webcam";
 // import {load as cocoSSDLoad} from "@tensorflow-models/coco-ssd";
 import * as tf from '@tensorflow/tfjs';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
-await tf.setBackend('webgl'); 
-await tf.ready();
+(async () => {
+  await tf.setBackend("webgl");
+  await tf.ready();
+  // your other startup logic
+})();
+
 
 import LoadingCVModel from "./LoadingCV";
 import {renderPredictions} from "./renderPredictions";
@@ -17,7 +21,7 @@ import { Toaster } from "../components/ui/toaster"
 
 
 const categories = [ "banana", "carrot", "bottle", "broccoli", "donut"];
-let detectInterval;  // set this as global variable to clear it later
+// let detectInterval;  // set this as global variable to clear it later
 
 
 const ObjectDetection = (qrCode) => {
@@ -68,7 +72,8 @@ const ObjectDetection = (qrCode) => {
         setIsLoading(false);
         console.log("Coco SSD model loaded.");
 
-        detectInterval =  setInterval(() => {       // global variable : detectInterval
+        // detectInterval =  
+        setInterval(() => {       // global variable : detectInterval
             runObjectDetection(net);
         }, 500); };  // ms
 
