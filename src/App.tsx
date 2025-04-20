@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import ShopperPage from './pages/ShopperPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -8,22 +8,68 @@ import DistributionPage from './pages/admin/DistributionPage';
 import VolunteerPage from './pages/admin/VolunteerPage';
 import { AppProvider } from './context/AppContext';
 import './App.css';
+import ProtectedRoute from './components/ProtectedRoute';  // ← 新增
 
 function App() {
   return (
-    <AppProvider>
-      <Router>
+      <AppProvider>
+        {/* Router 已经在 main.tsx 里，去掉这里的 <Router> */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/shopper/:section" element={<ShopperPage />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/inventory" element={<InventoryPage />} />
-          <Route path="/admin/suppliers" element={<SupplierPage />} />
-          <Route path="/admin/distribution" element={<DistributionPage />} />
-          <Route path="/admin/volunteers" element={<VolunteerPage />} />
+
+          {/* 购物者页面 */}
+          <Route
+              path="/shopper/:section"
+              element={
+                <ProtectedRoute>
+                  <ShopperPage />
+                </ProtectedRoute>
+              }
+          />
+
+          {/* 管理后台页面 */}
+          <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/admin/inventory"
+              element={
+                <ProtectedRoute>
+                  <InventoryPage />
+                </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/admin/suppliers"
+              element={
+                <ProtectedRoute>
+                  <SupplierPage />
+                </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/admin/distribution"
+              element={
+                <ProtectedRoute>
+                  <DistributionPage />
+                </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/admin/volunteers"
+              element={
+                <ProtectedRoute>
+                  <VolunteerPage />
+                </ProtectedRoute>
+              }
+          />
         </Routes>
-      </Router>
-    </AppProvider>
+      </AppProvider>
   );
 }
 

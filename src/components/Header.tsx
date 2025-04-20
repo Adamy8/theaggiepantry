@@ -2,11 +2,13 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { LogOut, ChevronLeft } from 'lucide-react';
+import {useAuth0} from "@auth0/auth0-react";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { activeSection, setActiveSection } = useAppContext();
+  const { logout } = useAuth0();
   
   const isAdminPage = location.pathname.includes('/admin');
   const isRootPage = location.pathname === '/';
@@ -28,7 +30,10 @@ const Header: React.FC = () => {
   };
   
   const handleLogout = () => {
-    navigate('/');
+    // 清理 Auth0 会话并返回首页
+    logout({ logoutParams: { returnTo: window.location.origin } });
+    // 如果你想同时重置本地状态，也可以：
+    setActiveSection(null as never);   // 视需求可选
   };
   
   if (isRootPage) {
