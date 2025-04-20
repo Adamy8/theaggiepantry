@@ -8,69 +8,68 @@ import DistributionPage from './pages/admin/DistributionPage';
 import VolunteerPage from './pages/admin/VolunteerPage';
 import { AppProvider } from './context/AppContext';
 import './App.css';
-import ProtectedRoute from './components/ProtectedRoute';  // ← 新增
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 
 function App() {
-  return (
-      <AppProvider>
-        {/* Router 已经在 main.tsx 里，去掉这里的 <Router> */}
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
+    return (
+        <AppProvider>
+            <Routes>
+                <Route path="/" element={<LandingPage />} />
 
-          {/* 购物者页面 */}
-          <Route
-              path="/shopper/:section"
-              element={
-                <ProtectedRoute>
-                  <ShopperPage />
-                </ProtectedRoute>
-              }
-          />
+                <Route
+                    path="/shopper/:section"
+                    element={
+                        <ProtectedRoute>
+                            <ShopperPage />
+                        </ProtectedRoute>
+                    }
+                />
 
-          {/* 管理后台页面 */}
-          <Route
-              path="/admin/dashboard"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-          />
-          <Route
-              path="/admin/inventory"
-              element={
-                <ProtectedRoute>
-                  <InventoryPage />
-                </ProtectedRoute>
-              }
-          />
-          <Route
-              path="/admin/suppliers"
-              element={
-                <ProtectedRoute>
-                  <SupplierPage />
-                </ProtectedRoute>
-              }
-          />
-          <Route
-              path="/admin/distribution"
-              element={
-                <ProtectedRoute>
-                  <DistributionPage />
-                </ProtectedRoute>
-              }
-          />
-          <Route
-              path="/admin/volunteers"
-              element={
-                <ProtectedRoute>
-                  <VolunteerPage />
-                </ProtectedRoute>
-              }
-          />
-        </Routes>
-      </AppProvider>
-  );
+                {/* role:staff */}
+                <Route
+                    path="/admin/dashboard"
+                    element={
+                        <AdminRoute>
+                            <AdminDashboard />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin/inventory"
+                    element={
+                        <AdminRoute>
+                            <InventoryPage />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin/suppliers"
+                    element={
+                        <AdminRoute>
+                            <SupplierPage />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin/distribution"
+                    element={
+                        <AdminRoute>
+                            <DistributionPage />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin/volunteers"
+                    element={
+                        <AdminRoute>
+                            <VolunteerPage />
+                        </AdminRoute>
+                    }
+                />
+            </Routes>
+        </AppProvider>
+    );
 }
 
 export default App;
