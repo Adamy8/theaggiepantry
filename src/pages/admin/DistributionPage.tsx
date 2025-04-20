@@ -153,7 +153,7 @@ const DistributionPage: React.FC = () => {
               onClick={() => setDateRange('7d')}
               className={`px-3 py-1 rounded-md ${
                 dateRange === '7d' 
-                  ? 'bg-primary text-white' 
+                  ? 'bg-[#658147] text-white' 
                   : 'bg-white text-neutral-700 border border-neutral-300'
               }`}
             >
@@ -163,7 +163,7 @@ const DistributionPage: React.FC = () => {
               onClick={() => setDateRange('30d')}
               className={`px-3 py-1 rounded-md ${
                 dateRange === '30d' 
-                  ? 'bg-primary text-white' 
+                  ? 'bg-[#658147] text-white' 
                   : 'bg-white text-neutral-700 border border-neutral-300'
               }`}
             >
@@ -173,7 +173,7 @@ const DistributionPage: React.FC = () => {
               onClick={() => setDateRange('90d')}
               className={`px-3 py-1 rounded-md ${
                 dateRange === '90d' 
-                  ? 'bg-primary text-white' 
+                  ? 'bg-[#658147] text-white' 
                   : 'bg-white text-neutral-700 border border-neutral-300'
               }`}
             >
@@ -246,7 +246,7 @@ const DistributionPage: React.FC = () => {
                   <Line 
                     type="monotone" 
                     dataKey="distributed" 
-                    stroke="#002855" 
+                    stroke="#658147" 
                     name="Items Distributed"
                     strokeWidth={2}
                     activeDot={{ r: 8 }} 
@@ -254,7 +254,7 @@ const DistributionPage: React.FC = () => {
                   <Line 
                     type="monotone" 
                     dataKey="received" 
-                    stroke="#78BE20" 
+                    stroke="#EC7F47" 
                     name="Items Received" 
                     strokeWidth={2}
                   />
@@ -278,7 +278,7 @@ const DistributionPage: React.FC = () => {
                   <Bar 
                     dataKey="value" 
                     name="Items Distributed" 
-                    fill="#002855" 
+                    fill="#963e70" 
                     radius={[4, 4, 0, 0]}
                   />
                 </BarChart>
@@ -303,7 +303,7 @@ const DistributionPage: React.FC = () => {
                   <Bar 
                     dataKey="difference" 
                     name="Net Change" 
-                    fill="#00B5E2" 
+                    fill="#6a4781" 
                     radius={[4, 4, 0, 0]}
                   />
                 </BarChart>
@@ -327,7 +327,7 @@ const DistributionPage: React.FC = () => {
                   <Bar 
                     dataKey="value" 
                     name="Percentage" 
-                    fill="#FFBF00" 
+                    fill="#658147" 
                     radius={[0, 4, 4, 0]}
                   />
                 </BarChart>

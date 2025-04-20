@@ -55,7 +55,7 @@ const Sidebar: React.FC = () => {
               <button
                 className={`w-full text-left px-6 py-3 flex items-center space-x-3 transition-colors ${
                   location.pathname === item.path
-                    ? 'bg-primary text-white font-medium'
+                    ? 'bg-primary text-primary font-medium'
                     : 'text-neutral-700 hover:bg-neutral-100'
                 }`}
                 onClick={() => navigate(item.path)}
