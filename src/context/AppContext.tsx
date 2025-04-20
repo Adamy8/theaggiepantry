@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Product, Supplier, Volunteer, FilterOptions } from '../types';
 import { productData, supplierData, volunteerData } from '../data/mockData';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface AppContextType {
   products: Product[];
@@ -11,6 +12,7 @@ interface AppContextType {
   setVolunteers: React.Dispatch<React.SetStateAction<Volunteer[]>>;
   filterOptions: FilterOptions;
   setFilterOptions: React.Dispatch<React.SetStateAction<FilterOptions>>;
+  fetchProducts: () => Promise<void>;
   addProduct: (product: Omit<Product, 'id'>) => void;
   updateProduct: (id: string, updates: Partial<Product>) => void;
   deleteProduct: (id: string) => void;
@@ -28,7 +30,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [products, setProducts] = useState<Product[]>(productData);
+  const [products, setProducts] = useState<Product[]>([]);     // fetch myself
   const [suppliers, setSuppliers] = useState<Supplier[]>(supplierData);
   const [volunteers, setVolunteers] = useState<Volunteer[]>(volunteerData);
   const [activeSection, setActiveSection] = useState<'pantry' | 'freedge'>('pantry');
@@ -38,26 +40,123 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     searchTerm: '',
   });
 
-  const addProduct = (product: Omit<Product, 'id'>) => {
+  const { getAccessTokenSilently } = useAuth0();
+
+
+  const fetchProducts = async () => {
+    const token = await getAccessTokenSilently();
+    try {
+      const res = await fetch('/api/items/', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error(`Failed to fetch products: ${res.status}`);
+      }
+  
+      const results = await res.json();
+      const data = results.data;
+      setProducts(data);
+    } catch (err) {
+      console.error('Error fetching products:', err);
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const addProduct = async (product: Omit<Product, 'id'>) => {
     const newProduct = {
       ...product,
       id: Date.now().toString(),
     };
     setProducts([...products, newProduct]);
+    // to backend !
+    const token = await getAccessTokenSilently();
+    try {
+      const res = await fetch('/api/items/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newProduct),
+      });
+  
+      if (!res.ok) {
+        throw new Error(`Failed to add product: ${res.status}`);
+      }
+  
+      const result = await res.json();
+      const message = result.message;
+      console.log('Product saved to backend:', message);
+    } catch (err) {
+      console.error('Backend save failed:', err);
+    }
   };
 
-  const updateProduct = (id: string, updates: Partial<Product>) => {
+  const updateProduct = async (id: string, updates: Partial<Product>) => {
     setProducts(
       products.map((product) =>
         product.id === id ? { ...product, ...updates } : product
       )
     );
+    // to backend !
+    const token = await getAccessTokenSilently();
+    try {
+      const res = await fetch(`/api/items/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updates),
+      });
+  
+      if (!res.ok) {
+        throw new Error(`Failed to add product: ${res.status}`);
+      }
+  
+      const result = await res.json();
+      const message = result.message;
+      console.log('Product saved to backend:', message);
+    } catch (err) {
+      console.error('Backend save failed:', err);
+    }
   };
 
-  const deleteProduct = (id: string) => {
+  const deleteProduct = async (id: string) => {
     setProducts(products.filter((product) => product.id !== id));
-  };
+    
+    // to backend !
+    const token = await getAccessTokenSilently();
+    try {
+      const res = await fetch(`/api/items/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
+      if (!res.ok) {
+        throw new Error(`Failed to delete product: ${res.status}`);
+      }
+
+      const result = await res.json();
+      console.log('Deleted on backend:', result.message);
+    } catch (err) {
+      console.error('Backend delete failed:', err);
+      // Optionally: rollback UI change or show toast
+    }
+  }
+
+
+
+
+  // Volunteer and Supplier functions  
   const addVolunteer = (volunteer: Omit<Volunteer, 'id'>) => {
     const newVolunteer = {
       ...volunteer,
@@ -140,6 +239,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setVolunteers,
         filterOptions,
         setFilterOptions,
+        fetchProducts,
         addProduct,
         updateProduct,
         deleteProduct,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { LogOut, ChevronLeft } from 'lucide-react';
+import { LogOut, ChevronLeft, TimerReset } from 'lucide-react';
 import {useAuth0} from "@auth0/auth0-react";
 
 const Header: React.FC = () => {
@@ -12,6 +12,7 @@ const Header: React.FC = () => {
   
   const isAdminPage = location.pathname.includes('/admin');
   const isRootPage = location.pathname === '/';
+  const isHistryPage = location.pathname.includes('/history');
   
   const handleSectionChange = (section: 'pantry' | 'freedge') => {
     setActiveSection(section);
@@ -28,6 +29,10 @@ const Header: React.FC = () => {
       navigate('/');
     }
   };
+
+  const handleHistory = () => {
+      navigate('/history');
+  };
   
   const handleLogout = () => {
     // 清理 Auth0 会话并返回首页
@@ -41,7 +46,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="bg-[#EC7F47] text-white py-4 px-6 shadow-md">
+    <header className="bg-[#f7864d] text-white py-4 px-6 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           {!isRootPage && (
@@ -82,6 +87,16 @@ const Header: React.FC = () => {
           </div>
         </div>
         
+        {!isHistryPage && (
+          <button
+            onClick={handleHistory}
+            className="flex items-center text-white hover:text-secondary transition-colors"
+          >
+            <span className="mr-2">Your History</span>
+            <TimerReset size={18} />
+          </button>
+        )}
+
         {!isRootPage && (
           <button
             onClick={handleLogout}

@@ -15,7 +15,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'http://localhost:3000', // Proxy API requests to the Express backend
+      '/api': {
+        target: 'https://aggiepantry.ngrok.app',
+        changeOrigin: true,
+        secure: true,
+      },
     },
   },
 });

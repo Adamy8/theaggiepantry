@@ -6,7 +6,7 @@ import {
   Truck, 
   BarChart3, 
   Users,
-  Settings
+  Camera
 } from 'lucide-react';
 import Logo from './Logo';
 
@@ -71,10 +71,10 @@ const Sidebar: React.FC = () => {
       <div className="p-6 border-t border-neutral-200">
         <button
           className="w-full text-left px-4 py-2 flex items-center space-x-3 text-neutral-600 hover:text-neutral-900 transition-colors"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/admin/checkout')}
         >
-          <Settings size={20} />
-          <span>Settings</span>
+          <Camera size={20} />
+          <span>Check Out!</span>
         </button>
       </div>
     </div>

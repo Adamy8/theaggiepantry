@@ -11,17 +11,42 @@ await tf.ready();
 import LoadingCVModel from "./LoadingCV";
 import {renderPredictions} from "./renderPredictions";
 import { Button } from "../components/ui/button"
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 const categories = [ "banana", "carrot", "bottle", "broccoli", "donut"];
 let detectInterval;  // set this as global variable to clear it later
+
 
 const ObjectDetection = (qrCode) => {
     const [isloading, setIsLoading] = useState(true);
     const [results, setResults] = useState("");
     const webcamRef = useRef<Webcam>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    
+
+    const { getAccessTokenSilently } = useAuth0();
+
+    const handleCheckout = async (objs:string) => {
+        // Handle checkout logic here
+        console.log("Checkout button clicked: ", objs);
+        const token = await getAccessTokenSilently();
+
+        try {
+            const res = await fetch('/api/checkout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ "token": qrCode.token, "items": objs }),
+            });
+            if (!res.ok) {throw new Error(`Failed to checkout: ${res.status}`);}
+            const result = await res.json();
+            console.log('Checkout successful:', result);
+        } catch (err) {
+            console.error('Error during checkout:', err);
+        }
+    }
 
     const runCoco = async () => {
         setIsLoading(true);
@@ -112,7 +137,8 @@ const ObjectDetection = (qrCode) => {
             <div className='flex flex-col bg-blue-200 p-4 rounded-lg shadow-md mt-5'>
                 <p className='text-blue-500'>Detected items: {results || "No items detected yet"}</p>
                 <div className="flex justify-end">
-                    <Button variant="outline" className="bg-blue-500 text-white mt-2 hover:bg-blue-600">
+                    <Button variant="outline" className="bg-blue-500 text-white mt-2 hover:bg-blue-600"
+                    onClick={() => handleCheckout(results)}>
                         Ready to check out?
                     </Button>
                 </div>

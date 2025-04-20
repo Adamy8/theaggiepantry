@@ -20,7 +20,7 @@ const CheckoutPage = () => {
                 {qrCode ? (
                     <Suspense fallback={<Loading />}>
                         {/* webcam + canvas */}
-                        <ObjectDetection qrCode={qrCode} />
+                        <ObjectDetection token={qrCode} />
                     </Suspense>
                 ) : (
                     <div className='flex flex-col items-center justify-center h-5/6 mt-10'>
