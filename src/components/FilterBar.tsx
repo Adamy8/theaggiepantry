@@ -81,7 +81,7 @@ const FilterBar: React.FC = () => {
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Search products..."
-            className="w-full py-2 px-4 pl-10 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full py-2 px-4 pl-10 border border-[#FDEED8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC7F47] focus:border-transparent"
           />
           <Search
             size={18}
@@ -97,7 +97,7 @@ const FilterBar: React.FC = () => {
             onClick={() => setIsFilterOpen(!isFilterOpen)}
             className={`flex items-center px-4 py-2 rounded-lg border ${
               isFilterOpen || hasActiveFilters
-                ? 'bg-primary text-white border-primary'
+                ? 'bg-[#EC7F47] text-white border-primary'
                 : 'border-neutral-300 text-neutral-700 hover:bg-neutral-50'
             } transition-colors`}
           >
@@ -136,7 +136,7 @@ const FilterBar: React.FC = () => {
                   onClick={() => toggleFilter('keywords', keyword)}
                   className={`px-3 py-1 rounded-full text-sm ${
                     selectedFilters.keywords.includes(keyword)
-                      ? 'bg-primary text-white'
+                      ? 'bg-[#EC7F47] text-white'
                       : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   } transition-colors`}
                 >
@@ -155,7 +155,7 @@ const FilterBar: React.FC = () => {
                   onClick={() => toggleFilter('dietary', diet)}
                   className={`px-3 py-1 rounded-full text-sm ${
                     selectedFilters.dietary.includes(diet)
-                      ? 'bg-primary text-white'
+                      ? 'bg-[#EC7F47] text-white'
                       : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   } transition-colors`}
                 >
@@ -174,7 +174,7 @@ const FilterBar: React.FC = () => {
                   onClick={() => toggleFilter('type', type)}
                   className={`px-3 py-1 rounded-full text-sm ${
                     selectedFilters.type.includes(type)
-                      ? 'bg-primary text-white'
+                      ? 'bg-[#EC7F47] text-white '
                       : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   } transition-colors`}
                 >

@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           className="w-full h-full object-cover"
         />
         {!isAvailable && (
-          <div className="absolute inset-0 bg-neutral-800/70 flex items-center justify-center">
+          <div className="absolute inset-0 bg-[#EC7F47] flex items-center justify-center">
             <span className="text-white font-bold text-lg">Not Available</span>
           </div>
         )}
@@ -99,7 +99,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {dietary.slice(0, 2).map((diet) => (
               <span
                 key={diet}
-                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-primary text-white"
+                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-[#658147] text-white"
               >
                 {diet}
               </span>

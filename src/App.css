@@ -6,6 +6,8 @@
   --primary-gold: #FFBF00;
   --secondary-blue: #0047AB;
   --secondary-gold: #FFC72C;
+  --primary-color: #EC7F47;
+  --primary-hover-color: #e86a3c;
   
   /* Additional colors */
   --accent-green: #78BE20;
@@ -130,12 +132,13 @@ a {
 }
 
 .btn-primary {
-  background-color: var(--primary-blue);
+  background-color: var(--primary-color);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: var(--secondary-blue);
+  background-color: var(--primary-hover-color);  
+  color: white;  
 }
 
 .btn-secondary {
