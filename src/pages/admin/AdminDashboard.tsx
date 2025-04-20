@@ -33,7 +33,7 @@ import {
   popularProductsData 
 } from '../../data/mockData';
 
-const COLORS = ['#002855', '#FFBF00', '#78BE20', '#00B5E2', '#C50D0D', '#6B7280'];
+const COLORS = ['#963e70', '#FFBF00', '#6a4781', '#00B5E2', '#EC7F47', '#658147'];
 
 const AdminDashboard: React.FC = () => {
   const { products, volunteers, suppliers } = useAppContext();
@@ -136,14 +136,14 @@ const AdminDashboard: React.FC = () => {
                   <Line 
                     type="monotone" 
                     dataKey="distributed" 
-                    stroke="#002855" 
+                    stroke="#658147" 
                     name="Items Distributed"
                     activeDot={{ r: 8 }} 
                   />
                   <Line 
                     type="monotone" 
                     dataKey="received" 
-                    stroke="#78BE20" 
+                    stroke="#EC7F47" 
                     name="Items Received" 
                   />
                 </LineChart>
@@ -188,7 +188,7 @@ const AdminDashboard: React.FC = () => {
                   <XAxis type="number" />
                   <YAxis type="category" dataKey="name" width={100} />
                   <Tooltip />
-                  <Bar dataKey="value" name="Items Distributed" fill="#002855" />
+                  <Bar dataKey="value" name="Items Distributed" fill="#658147" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

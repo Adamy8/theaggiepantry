@@ -97,7 +97,7 @@ const LandingPage: React.FC = () => {
       <footer className="py-6 bg-white border-t border-neutral-200">
         <div className="container mx-auto text-center">
           <p className="text-neutral-500 text-sm">
-            &copy; {new Date().getFullYear()} UC Davis AggiePantry | The Pantry and Freedge
+            &copy; {new Date().getFullYear()} The Aggie Pantry | The Pantry and Freedge
           </p>
         </div>
       </footer>
