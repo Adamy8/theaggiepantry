@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
+    "@google/generative-ai": "^0.24.0",
     "@radix-ui/react-slot": "^1.2.0",
     "@tensorflow-models/coco-ssd": "^2.2.3",
     "@tensorflow/tfjs": "^4.22.0",
@@ -19,6 +20,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.4.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.344.0",
     "path": "^0.12.7",
@@ -34,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",

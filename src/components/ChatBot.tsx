@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
 
 interface Message {
   text: string;
@@ -19,7 +18,6 @@ const ChatBot: React.FC = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { products } = useAppContext();
 
   useEffect(() => {
     if (isOpen) {
@@ -31,7 +29,66 @@ const ChatBot: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Function to clean and format the response from Gemini
+  const formatRecipeResponse = (response: string) => {
+    if (!response) return '';
+
+    // Remove unnecessary characters, markdown, and make the response concise
+    let cleanedResponse = response.replace(/\*\*([^\*]+)\*\*/g, '$1')  // Remove bold (**)
+                                    .replace(/\*([^\*]+)\*/g, '$1');  // Remove italic (*)
+    cleanedResponse = cleanedResponse.split('\n').slice(0, 20).join('\n');  // Limit response to 20 lines
+
+    // Format as concise bullet points
+    const sections = cleanedResponse.split('\n').map((line) => {
+      if (line.startsWith('1.')) return `- Culinary Uses:`;
+      if (line.startsWith('2.')) return `- Nutrition:`;
+      if (line.startsWith('3.')) return `- Popular Recipes:`;
+      return line;  // Return the line as-is if it doesn't match a section
+    });
+
+    return sections.join('\n\n');
+  };
+
+  // Function to generate the full prompt for Gemini
+  const getRecipe = async (input: string) => {
+    const fullPrompt = `
+      Provide a concise ingredient guide for "${input}".
+      Limit the response to 20 lines or less, including sections for:
+      1. Culinary Uses
+      2. Nutrition
+      3. Popular Recipes
+    `;
+
+    // Send request to the backend to get a response from Gemini
+    try {
+      const response = await fetch('/api/recipe', {
+        method: 'POST',
+        body: JSON.stringify({ prompt: fullPrompt }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await response.json();
+      const formattedRecipe = formatRecipeResponse(data.recipe);
+
+      const botMessage: Message = {
+        text: formattedRecipe || "I couldn't find a recipe for that. Can you try again?",
+        isUser: false,
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      const errorMessage: Message = {
+        text: 'Sorry, something went wrong while fetching the recipe.',
+        isUser: false,
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!inputText.trim()) return;
@@ -46,83 +103,8 @@ const ChatBot: React.FC = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInputText('');
 
-    // Process input and generate response
-    setTimeout(() => {
-      const botResponse = generateResponse(inputText);
-      const botMessage: Message = {
-        text: botResponse,
-        isUser: false,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 500);
-  };
-
-  const generateResponse = (input: string): string => {
-    const ingredients = input
-      .toLowerCase()
-      .split(/[,\s]+/)
-      .filter((word) => word.length > 2);
-
-    // Check if any ingredients match our product list
-    const availableProducts = products.filter((product) =>
-      ingredients.some(
-        (ingredient) =>
-          product.name.toLowerCase().includes(ingredient) ||
-          product.tags.some((tag) => tag.toLowerCase().includes(ingredient))
-      )
-    );
-
-    if (ingredients.length === 0) {
-      return "I didn't recognize any ingredients. Could you please list some ingredients you have?";
-    }
-
-    if (availableProducts.length === 0) {
-      // Generic response based on common ingredients
-      if (ingredients.includes('egg') || ingredients.includes('eggs')) {
-        return "With eggs, you could make a quick scramble! Beat eggs, add a splash of milk if available, and cook on medium heat. Add any vegetables you have for extra nutrients. You can also make a simple fried egg sandwich with bread and any condiments you have.";
-      }
-
-      if (ingredients.includes('potato') || ingredients.includes('potatoes')) {
-        return "Potatoes are versatile! You can make quick microwave 'baked' potatoes (poke holes, microwave for 5-7 minutes). Top with whatever you have - cheese, beans, or even just salt and pepper. You can also dice them and pan fry for home fries.";
-      }
-
-      if (ingredients.includes('beans') || ingredients.includes('bean')) {
-        return "Beans make a great protein source! Warm them up and serve over rice or with tortillas. Add any spices you have for flavor. You can also mash them with a fork for a quick bean spread for sandwiches or wraps.";
-      }
-
-      return "Based on what you have, I'd suggest looking up simple one-pot meals or sandwiches. You can also try instant ramen with added ingredients to make it more nutritious. What specific ingredients would you like recipe ideas for?";
-    }
-
-    // Generate response based on available products
-    const productNames = availableProducts.map((p) => p.name.toLowerCase());
-
-    if (productNames.includes('black beans') || productNames.includes('canned black beans')) {
-      if (productNames.includes('rice') || ingredients.includes('rice')) {
-        return "You can make a simple bean and rice bowl! Heat the beans in a pan, cook rice separately, then combine. Add any spices you have like cumin or chili powder. Top with any vegetables for a complete meal.";
-      } else {
-        return "With black beans, you can make a quick bean dip by mashing them with a fork and adding any spices you have. Great with chips or as a spread on bread or tortillas.";
-      }
-    }
-
-    if (productNames.includes('broccoli')) {
-      return "Broccoli makes a great stir fry! Cut it into florets and cook in a pan with a little oil until tender. Add soy sauce if you have it, or just salt and pepper. Serve with rice or noodles if available.";
-    }
-
-    if (productNames.includes('pasta') || ingredients.includes('pasta')) {
-      return "Pasta is quick and easy! Cook according to package directions. If you have canned tomatoes, you can make a simple sauce by simmering them with any herbs you have. Otherwise, a little olive oil, salt, and pepper works great too.";
-    }
-
-    if (productNames.includes('milk')) {
-      if (productNames.includes('cereal') || ingredients.includes('cereal')) {
-        return "The classic: cereal and milk! Quick, easy, and no cooking required.";
-      } else {
-        return "With milk, you can make simple mug cakes or puddings. For a basic mug cake, mix 4 tbsp flour, 2 tbsp sugar, 2 tbsp cocoa powder, ¼ tsp baking powder, pinch of salt, 5 tbsp milk, 2 tbsp oil in a mug and microwave for 1-1.5 minutes.";
-      }
-    }
-
-    // Generic response
-    return `Based on your ingredients (${availableProducts.map(p => p.name).join(', ')}), you could make a simple meal by combining them. For vegetables, a quick stir fry works well. For canned goods, they can be heated and eaten as a side dish. Would you like more specific recipe ideas for any particular ingredient?`;
+    // Call getRecipe function to get a recipe suggestion
+    await getRecipe(inputText);
   };
 
   return (
