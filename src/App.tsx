@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import ShopperPage from './pages/ShopperPage';
+import HistoryPage from './pages/History';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import InventoryPage from './pages/admin/InventoryPage';
 import SupplierPage from './pages/admin/SupplierPage';
@@ -19,6 +20,9 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/shopper/:section" element={<ProtectedRoute> 
             <ShopperPage /> 
+            </ProtectedRoute>} />
+          <Route path="/history" element={<ProtectedRoute> 
+            <HistoryPage /> 
             </ProtectedRoute>} />
           <Route path="/admin/dashboard" element={<AdminRoute> 
             <AdminDashboard /> 
