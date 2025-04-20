@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useState } from 'react'
+import { Suspense, useState } from 'react'
 // import Link from 'next/link';
 import Loading from '../../components/Loading';
 import ObjectDetection from '../../components/ObjectDetection';
@@ -8,7 +8,7 @@ import { Scanner } from '@yudiel/react-qr-scanner';
 
 
 
-const VisionPage = () => {
+const CheckoutPage = () => {
 
     const [qrCode, setQrCode] = useState<string | null>(null);
 
@@ -39,4 +39,4 @@ const VisionPage = () => {
 };
 
 
-export default VisionPage;
+export default CheckoutPage;

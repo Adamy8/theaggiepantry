@@ -2,8 +2,12 @@
 
 import {useEffect, useRef, useState} from "react";
 import Webcam from "react-webcam";
-import {load as cocoSSDLoad} from "@tensorflow-models/coco-ssd";
-import * as tf from "@tensorflow/tfjs";
+// import {load as cocoSSDLoad} from "@tensorflow-models/coco-ssd";
+import * as tf from '@tensorflow/tfjs';
+import * as cocoSsd from '@tensorflow-models/coco-ssd';
+await tf.setBackend('webgl'); 
+await tf.ready();
+
 import LoadingCVModel from "./LoadingCV";
 import {renderPredictions} from "./renderPredictions";
 import { Button } from "../components/ui/button"
@@ -16,13 +20,13 @@ const ObjectDetection = (qrCode) => {
     const [isloading, setIsLoading] = useState(true);
     const [results, setResults] = useState("");
     const webcamRef = useRef<Webcam>(null);
-    const canvasRef = useRef(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     
 
     const runCoco = async () => {
         setIsLoading(true);
         console.log("Loading Coco SSD model...");
-        const net = await cocoSSDLoad();
+        const net = await cocoSsd.load();
         setIsLoading(false);
         console.log("Coco SSD model loaded.");
 
