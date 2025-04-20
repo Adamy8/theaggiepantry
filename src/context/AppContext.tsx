@@ -33,9 +33,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [volunteers, setVolunteers] = useState<Volunteer[]>(volunteerData);
   const [activeSection, setActiveSection] = useState<'pantry' | 'freedge'>('pantry');
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    keywords: [],
-    dietary: [],
     type: [],
+    source: [],
     searchTerm: '',
   });
 
@@ -113,18 +112,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       );
     }
 
-    if (filterOptions.keywords.length > 0) {
+    if (filterOptions.source.length > 0) {
       filtered = filtered.filter((product) =>
-        filterOptions.keywords.some((keyword) =>
-          product.tags.includes(keyword)
-        )
-      );
-    }
-
-    if (filterOptions.dietary.length > 0) {
-      filtered = filtered.filter((product) =>
-        filterOptions.dietary.some((diet) =>
-          product.dietary.includes(diet)
+        filterOptions.source.some((diet) =>
+          product.source.includes(diet)
         )
       );
     }

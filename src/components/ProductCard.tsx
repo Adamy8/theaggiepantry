@@ -18,9 +18,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
     description,
     imageUrl,
     quantity,
-    tags,
-    dietary,
     type,
+    source,
     expiration,
     isAvailable,
   } = product;
@@ -69,7 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         
         <div className="flex items-center text-sm text-neutral-500 mb-3">
           <ShoppingBag size={16} className="mr-1" />
-          <span className="capitalize">{type}</span>
+          <span className="capitalize">{source}</span>
           
           {expiration && (
             <>
@@ -82,28 +81,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
         
-        <div className="flex flex-wrap gap-1 mb-2">
-          {tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-neutral-100 text-neutral-700"
-            >
-              <Tag size={12} className="mr-1" />
-              {tag}
-            </span>
-          ))}
-        </div>
-        
-        {dietary.length > 0 && (
+        {source.length > 0 && (
           <div className="flex flex-wrap gap-1">
-            {dietary.slice(0, 2).map((diet) => (
-              <span
-                key={diet}
+              <div
                 className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-[#658147] text-white"
               >
-                {diet}
-              </span>
-            ))}
+                {type}
+              </div>
           </div>
         )}
       </div>
