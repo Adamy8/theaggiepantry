@@ -15,18 +15,30 @@ import AdminRoute from './components/AdminRoute';
 function App() {
   return (
     <AppProvider>
-      <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/shopper/:section" element={<ProtectedRoute> <ShopperPage /> </ProtectedRoute>} />
-          <Route path="/admin/dashboard" element={<AdminRoute> <AdminDashboard /> </AdminRoute>} />
-          <Route path="/admin/inventory" element={<AdminRoute> <InventoryPage /> </AdminRoute>} />
-          <Route path="/admin/suppliers" element={<AdminRoute> <SupplierPage /> </AdminRoute>} />
-          <Route path="/admin/distribution" element={<AdminRoute> <DistributionPage /> </AdminRoute>} />
-          <Route path="/admin/volunteers" element={<AdminRoute> <VolunteerPage /> </AdminRoute>} />
-          <Route path="/admin/checkout" element={<AdminRoute> <CheckoutPage /> </AdminRoute>} />
+          <Route path="/shopper/:section" element={<ProtectedRoute> 
+            <ShopperPage /> 
+            </ProtectedRoute>} />
+          <Route path="/admin/dashboard" element={<AdminRoute> 
+            <AdminDashboard /> 
+            </AdminRoute>} />
+          <Route path="/admin/inventory" element={<AdminRoute> 
+            <InventoryPage /> 
+            </AdminRoute>} />
+          <Route path="/admin/suppliers" element={<AdminRoute>
+             <SupplierPage />
+           </AdminRoute>} />
+          <Route path="/admin/distribution" element={<AdminRoute>
+             <DistributionPage /> 
+          </AdminRoute>} />
+          <Route path="/admin/volunteers" element={<AdminRoute> 
+            <VolunteerPage />
+           </AdminRoute>} />
+          <Route path="/admin/checkout" element={<AdminRoute>
+             <CheckoutPage /> 
+          </AdminRoute>} />
         </Routes>
-      </Router>
     </AppProvider>
   );
 }
