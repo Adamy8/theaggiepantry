@@ -12,6 +12,8 @@ import LoadingCVModel from "./LoadingCV";
 import {renderPredictions} from "./renderPredictions";
 import { Button } from "../components/ui/button"
 import { useAuth0 } from '@auth0/auth0-react';
+import { useToast } from "../hooks/use-toast"
+import { Toaster } from "../components/ui/toaster"
 
 
 const categories = [ "banana", "carrot", "bottle", "broccoli", "donut"];
@@ -23,6 +25,7 @@ const ObjectDetection = (qrCode) => {
     const [results, setResults] = useState("");
     const webcamRef = useRef<Webcam>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const { toast } = useToast()
 
     const { getAccessTokenSilently } = useAuth0();
 
@@ -43,8 +46,18 @@ const ObjectDetection = (qrCode) => {
             if (!res.ok) {throw new Error(`Failed to checkout: ${res.status}`);}
             const result = await res.json();
             console.log('Checkout successful:', result);
+            toast({
+                title: "Checkout Successful!",
+                variant: "outline",
+                description: `Your items (${objs}) have been checked out.`,
+            })
         } catch (err) {
             console.error('Error during checkout:', err);
+            toast({
+                variant: "destructive",
+                title: "Checkout Failed",
+                description: "There was an error processing your checkout. Please try again.",
+            })
         }
     }
 
@@ -143,7 +156,7 @@ const ObjectDetection = (qrCode) => {
                     </Button>
                 </div>
             </div>
-
+            <Toaster />
         </div>
     )
 }

@@ -13,6 +13,7 @@
     "@auth0/auth0-react": "^2.3.0",
     "@google/generative-ai": "^0.24.0",
     "@radix-ui/react-slot": "^1.2.0",
+    "@radix-ui/react-toast": "^1.2.10",
     "@tensorflow-models/coco-ssd": "^2.2.3",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
