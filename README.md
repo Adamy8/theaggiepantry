@@ -3,6 +3,10 @@
 Full-stack inventory and checkout experience for Aggie food pantry,
 with shopper views, admin workflows, and AI-assisted recipe suggestions.
 
+## Links
+- Devpost: https://devpost.com/software/the-aggie-pantry
+- Live: https://theaggiepantry.vercel.app
+
 ## Features
 - Role-based access (shopper vs. admin) with Auth0 authentication.
 - Pantry inventory browsing with filtering and search.
