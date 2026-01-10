@@ -6,6 +6,7 @@ with shopper views, admin workflows, and AI-assisted recipe suggestions.
 ## Links
 - Devpost: https://devpost.com/software/the-aggie-pantry
 - Live: https://theaggiepantry.vercel.app
+- Pitch(with demo): https://pitch.com/v/aggie-pantry-knpg2m
 
 ## Features
 - Role-based access (shopper vs. admin) with Auth0 authentication.
